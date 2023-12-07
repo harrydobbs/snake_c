@@ -1,10 +1,8 @@
 {
+    "C_Cpp.default.includePath": ["${workspaceFolder}/**"],
     "files.associations": {
-        "stdio.h": "c",
-        "sdl_video.h": "c",
-        "parameters.h": "c",
-        "types.h": "c",
-        "sdl.h": "c"
+        "*.h": "c",
+        "*.c": "c"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    // Other settings as required
 }

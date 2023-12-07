@@ -11,12 +11,12 @@ bool snake_position_is_valid(Position *pos)
     return (pos->y < NUM_VERTICAL_CELLS && pos->y >= 0 && pos->x < NUM_HORIZONTAL_CELLS && pos->x >= 0);
 }
 
-bool move_snake(Snake *snake, Direction direction)
+bool move_snake(Snake *snake )
 {
 
     Position potential_position = *snake->positions;
 
-    switch (direction)
+    switch (snake->direction)
     {
     case UP:
         potential_position.y--;
@@ -46,8 +46,8 @@ void draw_snake(SDL_Renderer *renderer, Snake *snake)
     SDL_SetRenderDrawColor(renderer, snake_color.r, snake_color.g,
                            snake_color.b, snake_color.a);
 
-    int X = (SCREEN_WIDTH / 2) - (GRID_WIDTH / 2) + snake->position->x * GRID_CELL_SIZE;
-    int Y = (SCREEN_HEIGHT / 2) - (GRID_HEIGHT / 2) + snake->position->y * GRID_CELL_SIZE;
+    int X = (SCREEN_WIDTH / 2) - (GRID_WIDTH / 2) + snake->positions->x * GRID_CELL_SIZE;
+    int Y = (SCREEN_HEIGHT / 2) - (GRID_HEIGHT / 2) + snake->positions->y * GRID_CELL_SIZE;
 
     SDL_Rect rect;
     rect.x = X;

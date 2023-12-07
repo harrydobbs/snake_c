@@ -22,7 +22,8 @@ typedef struct Snake
 } Snake;
 
 bool snake_position_is_valid(Position *pos);
-bool move_snake(Snake *snake, Direction direction);
+void update_snake_direction(Snake *snake, Direction new_direction);
+bool move_snake(Snake *snake);
 void draw_snake(SDL_Renderer *renderer, Snake *snake);
 
 #endif
