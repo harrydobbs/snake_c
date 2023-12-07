@@ -25,5 +25,5 @@ bool snake_position_is_valid(Position *pos);
 void update_snake_direction(Snake *snake, Direction new_direction);
 bool move_snake(Snake *snake);
 void draw_snake(SDL_Renderer *renderer, Snake *snake);
-
+Snake init_snake(void);
 #endif

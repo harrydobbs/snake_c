@@ -10,9 +10,8 @@
 #define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
-
-void update_events(Snake *snake){
-
+void update_events(Snake *snake)
+{
 
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
@@ -20,20 +19,18 @@ void update_events(Snake *snake){
     {
         update_snake_direction(snake, LEFT);
     }
-    if (keystate[SDL_SCANCODE_RIGHT])
+    else if (keystate[SDL_SCANCODE_RIGHT])
     {
         update_snake_direction(snake, RIGHT);
     }
-    if (keystate[SDL_SCANCODE_UP])
+    else if (keystate[SDL_SCANCODE_UP])
     {
         update_snake_direction(snake, UP);
     }
-    if (keystate[SDL_SCANCODE_DOWN])
+    else if (keystate[SDL_SCANCODE_DOWN])
     {
         update_snake_direction(snake, DOWN);
     }
-
-
 }
 
 bool main_loop(SDL_Renderer *renderer, Snake *snake, Uint32 *lastUpdateTime)
@@ -41,8 +38,10 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Uint32 *lastUpdateTime)
     SDL_Event e;
     bool quit = false;
 
-    while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_QUIT) {
+    while (SDL_PollEvent(&e))
+    {
+        if (e.type == SDL_QUIT)
+        {
             quit = true;
         }
     }
@@ -50,7 +49,8 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Uint32 *lastUpdateTime)
     update_events(snake);
 
     Uint32 currentTime = SDL_GetTicks();
-    if (currentTime - *lastUpdateTime > UPDATE_INTERVAL) { 
+    if (currentTime - *lastUpdateTime > UPDATE_INTERVAL)
+    {
         move_snake(snake);
         *lastUpdateTime = currentTime;
     }
@@ -61,7 +61,7 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Uint32 *lastUpdateTime)
     draw_snake(renderer, snake);
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(10); // Small delay to limit the frame rate
+    SDL_Delay(10);
 
     return quit;
 }
@@ -125,16 +125,14 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-
     Position snake_pos = {0, 0};
-    Snake snake = {&snake_pos, UP};
+    Snake snake init_snake(); //= {&snake_pos, UP};
     Uint32 lastUpdateTime = 0;
 
     bool quit = false;
     while (!quit)
     {
         quit = main_loop(renderer, &snake, &lastUpdateTime);
-
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

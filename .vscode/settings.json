@@ -4,5 +4,6 @@
         "*.h": "c",
         "*.c": "c"
     },
+    "C_Cpp.errorSquiggles": "disabled",
     // Other settings as required
 }
