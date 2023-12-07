@@ -41,7 +41,6 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Uint32 *lastUpdateTime)
     SDL_Event e;
     bool quit = false;
 
-    // Non-blocking event polling
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {
             quit = true;
@@ -127,9 +126,8 @@ int main(int argc, char *argv[])
     }
 
 
-    Direction snake_dir = UP;
     Position snake_pos = {0, 0};
-    Snake snake = {&snake_pos, snake_dir};
+    Snake snake = {&snake_pos, UP};
     Uint32 lastUpdateTime = 0;
 
     bool quit = false;
