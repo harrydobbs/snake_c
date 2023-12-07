@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
     }
 
     Position snake_pos = {0, 0};
-    Snake snake init_snake(); //= {&snake_pos, UP};
+    Snake snake = {&snake_pos, UP};
     Uint32 lastUpdateTime = 0;
 
     bool quit = false;

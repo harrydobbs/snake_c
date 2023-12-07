@@ -69,11 +69,3 @@ void update_snake_direction(Snake *snake, Direction new_direction)
         snake->direction = new_direction;
     }
 }
-
-Snake init_snake(void)
-{
-    Position snake_pos = {0, 0};
-    Snake snake = {&snake_pos, RIGHT};
-
-    return snake;
-}
