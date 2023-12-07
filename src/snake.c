@@ -1,28 +1,54 @@
 #include <stdio.h>
 #include <stdbool.h>
-
 #include <SDL.h>
 
 #include "snake.h"
 #include "parameters.h"
 
-bool snake_position_is_valid(Position *pos)
+Snake init_snake(int initial_size, Direction inital_direction)
 {
-    return (pos->y < NUM_VERTICAL_CELLS && pos->y >= 0 && pos->x < NUM_HORIZONTAL_CELLS && pos->x >= 0);
+    Position *body = malloc(initial_size * sizeof(Position));
+
+    Snake snake = {body, initial_size, inital_direction};
+
+    for (int i = 0; i < initial_size; ++i)
+    {
+        body[i] = (Position){0, i};
+    }
+    return snake;
+}
+
+void destroy_snake(Snake *snake)
+{
+    if (snake != NULL)
+    {
+        free(snake->body);
+        snake->body = NULL;
+    }
+}
+
+void extend_snake(Snake *snake)
+{
+    snake->length++;
+    snake->body = realloc(snake->body, snake->length * sizeof(Position));
+    snake->body[snake->length - 1] = snake->body[snake->length - 2];
+}
+
+bool snake_position_is_valid(Position pos)
+{
+    return (pos.y < NUM_VERTICAL_CELLS && pos.y >= 0 &&
+            pos.x < NUM_HORIZONTAL_CELLS && pos.x >= 0);
 }
 
 bool move_snake(Snake *snake)
 {
 
-    Position potential_position = *snake->positions;
+    Position potential_position = snake->body[0];
 
-    switch (snake->direction)
+    switch (snake->dir)
     {
     case UP:
         potential_position.y--;
-        break;
-    case RIGHT:
-        potential_position.x++;
         break;
     case DOWN:
         potential_position.y++;
@@ -30,42 +56,63 @@ bool move_snake(Snake *snake)
     case LEFT:
         potential_position.x--;
         break;
+    case RIGHT:
+        potential_position.x++;
+        break;
     }
 
-    if (snake_position_is_valid(&potential_position))
+    if (!snake_position_is_valid(potential_position))
     {
-        *snake->positions = potential_position;
-        return true;
+        return false;
     }
-    return false;
+
+    for (int i = snake->length - 1; i > 0; i--)
+    {
+        snake->body[i] = snake->body[i - 1];
+    }
+
+    snake->body[0] = potential_position;
+
+    return true;
 }
 
 void draw_snake(SDL_Renderer *renderer, Snake *snake)
 {
 
     SDL_SetRenderDrawColor(renderer,
+                           snake_head_color.r, snake_head_color.g,
+                           snake_head_color.b, snake_head_color.a);
+
+    SDL_Rect rect;
+    rect.x = GRID_WIDTH_OFFSET + snake->body[0].x * GRID_CELL_SIZE;
+    rect.y = GRID_HEIGHT_OFFSET + snake->body[0].y * GRID_CELL_SIZE;
+    rect.w = GRID_CELL_SIZE;
+    rect.h = GRID_CELL_SIZE;
+    SDL_RenderFillRect(renderer, &rect);
+
+    SDL_SetRenderDrawColor(renderer,
                            snake_color.r, snake_color.g,
                            snake_color.b, snake_color.a);
 
-    int X = (SCREEN_WIDTH / 2) - (GRID_WIDTH / 2) + snake->positions->x * GRID_CELL_SIZE;
-    int Y = (SCREEN_HEIGHT / 2) - (GRID_HEIGHT / 2) + snake->positions->y * GRID_CELL_SIZE;
+    for (int i = 1; i < snake->length; i++)
+    {
 
-    SDL_Rect rect;
-    rect.x = X;
-    rect.y = Y;
-    rect.w = GRID_CELL_SIZE;
-    rect.h = GRID_CELL_SIZE;
-
-    SDL_RenderFillRect(renderer, &rect);
+        SDL_Rect rect;
+        rect.x = GRID_WIDTH_OFFSET + snake->body[i].x * GRID_CELL_SIZE;
+        rect.y = GRID_HEIGHT_OFFSET + snake->body[i].y * GRID_CELL_SIZE;
+        rect.w = GRID_CELL_SIZE;
+        rect.h = GRID_CELL_SIZE;
+        SDL_RenderFillRect(renderer, &rect);
+    }
 }
 
 void update_snake_direction(Snake *snake, Direction new_direction)
 {
-    if ((new_direction == UP && snake->direction != DOWN) ||
-        (new_direction == DOWN && snake->direction != UP) ||
-        (new_direction == LEFT && snake->direction != RIGHT) ||
-        (new_direction == RIGHT && snake->direction != LEFT))
+    if ((new_direction == UP && snake->dir != DOWN) ||
+        (new_direction == DOWN && snake->dir != UP) ||
+        (new_direction == LEFT && snake->dir != RIGHT) ||
+        (new_direction == RIGHT && snake->dir != LEFT))
     {
-        snake->direction = new_direction;
+        snake->dir = new_direction;
     }
 }

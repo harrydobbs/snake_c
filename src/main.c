@@ -103,7 +103,6 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("SDL could not be initialized!\n"
@@ -125,8 +124,8 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    Position snake_pos = {0, 0};
-    Snake snake = {&snake_pos, UP};
+    // Position snake_pos = {0, 0};
+    Snake snake = init_snake(INIT_SNAKE_LENGTH, DOWN); //{&snake_pos, UP};
     Uint32 lastUpdateTime = 0;
 
     bool quit = false;
