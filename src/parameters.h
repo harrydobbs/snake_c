@@ -27,5 +27,6 @@ extern SDL_Color grid_cursor_color;
 extern SDL_Color snake_color;
 extern SDL_Color snake_line_color;
 extern SDL_Color snake_head_color;
+extern SDL_Color food_color;
 
 #endif // PARAMETERS_H

@@ -34,10 +34,25 @@ void extend_snake(Snake *snake)
     snake->body[snake->length - 1] = snake->body[snake->length - 2];
 }
 
-bool snake_position_is_valid(Position pos)
+bool is_position_inside_grid(Position pos)
 {
     return (pos.y < NUM_VERTICAL_CELLS && pos.y >= 0 &&
             pos.x < NUM_HORIZONTAL_CELLS && pos.x >= 0);
+}
+
+bool is_snake_self_intersecting(Snake *snake, Position potential_position)
+{
+    for (int i = 2; i < snake->length; i++)
+    {
+        if (snake->body[i].x == potential_position.x &&
+            snake->body[i].y == potential_position.y)
+        {
+            printf("Collision body: (%i, %i), head: (%i, %i)", snake->body[i].x,
+                   snake->body[i].y, potential_position.x, potential_position.y);
+            return true;
+        }
+    }
+    return false;
 }
 
 bool move_snake(Snake *snake)
@@ -61,7 +76,12 @@ bool move_snake(Snake *snake)
         break;
     }
 
-    if (!snake_position_is_valid(potential_position))
+    if (!is_position_inside_grid(potential_position))
+    {
+        return false;
+    }
+
+    if (is_snake_self_intersecting(snake, potential_position))
     {
         return false;
     }
@@ -74,6 +94,17 @@ bool move_snake(Snake *snake)
     snake->body[0] = potential_position;
 
     return true;
+}
+
+void update_snake_direction(Snake *snake, Direction new_direction)
+{
+    if ((new_direction == UP && snake->dir != DOWN) ||
+        (new_direction == DOWN && snake->dir != UP) ||
+        (new_direction == LEFT && snake->dir != RIGHT) ||
+        (new_direction == RIGHT && snake->dir != LEFT))
+    {
+        snake->dir = new_direction;
+    }
 }
 
 void draw_snake(SDL_Renderer *renderer, Snake *snake)
@@ -103,16 +134,5 @@ void draw_snake(SDL_Renderer *renderer, Snake *snake)
         rect.w = GRID_CELL_SIZE;
         rect.h = GRID_CELL_SIZE;
         SDL_RenderFillRect(renderer, &rect);
-    }
-}
-
-void update_snake_direction(Snake *snake, Direction new_direction)
-{
-    if ((new_direction == UP && snake->dir != DOWN) ||
-        (new_direction == DOWN && snake->dir != UP) ||
-        (new_direction == LEFT && snake->dir != RIGHT) ||
-        (new_direction == RIGHT && snake->dir != LEFT))
-    {
-        snake->dir = new_direction;
     }
 }
