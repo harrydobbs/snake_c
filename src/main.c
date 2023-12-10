@@ -53,8 +53,7 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Food *food, Uint32 *lastUpd
     if (currentTime - *lastUpdateTime > UPDATE_INTERVAL)
     {
         update_events(snake);
-        bool moved = true;
-        // move_snake(snake);
+        bool moved = move_snake(snake);
         if (!moved)
         {
             quit = true;
