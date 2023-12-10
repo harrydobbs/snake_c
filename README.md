@@ -18,8 +18,8 @@ This Snake game is a classic arcade game implemented in C using the SDL library.
 ## Installation and Running
 1. **Clone the Repository**
    ```
-   git clone [URL to your repository]
-   cd [repository name]
+   git clone git@github.com:harrydobbs/snake_c.git
+   cd snake_c
    ```
 
 2. **Build the Game**
