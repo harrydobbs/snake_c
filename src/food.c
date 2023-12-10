@@ -19,7 +19,6 @@ void generate_food(Snake *snake, Food *food)
             food->pos.x = x;
             food->pos.y = y;
             food->active = true;
-            printf("%i %i", x, y);
         }
     }
 }

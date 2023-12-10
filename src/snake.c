@@ -5,7 +5,10 @@
 #include "snake.h"
 #include "parameters.h"
 
-Snake init_snake(int initial_size, Direction inital_direction)
+Snake init_snake(int initial_size,
+                 int init_x_position,
+                 int init_y_position,
+                 Direction inital_direction)
 {
     Position *body = malloc(initial_size * sizeof(Position));
 
@@ -13,7 +16,7 @@ Snake init_snake(int initial_size, Direction inital_direction)
 
     for (int i = 0; i < initial_size; ++i)
     {
-        body[i] = (Position){0, i};
+        body[i] = (Position){init_x_position, init_y_position - i};
     }
     return snake;
 }
@@ -47,8 +50,7 @@ bool is_snake_self_intersecting(Snake *snake, Position potential_position)
         if (snake->body[i].x == potential_position.x &&
             snake->body[i].y == potential_position.y)
         {
-            printf("Collision body: (%i, %i), head: (%i, %i)", snake->body[i].x,
-                   snake->body[i].y, potential_position.x, potential_position.y);
+
             return true;
         }
     }
@@ -109,11 +111,9 @@ void update_snake_direction(Snake *snake, Direction new_direction)
 
 void draw_snake(SDL_Renderer *renderer, Snake *snake)
 {
-
     SDL_SetRenderDrawColor(renderer,
                            snake_head_color.r, snake_head_color.g,
                            snake_head_color.b, snake_head_color.a);
-
     SDL_Rect rect;
     rect.x = GRID_WIDTH_OFFSET + snake->body[0].x * GRID_CELL_SIZE;
     rect.y = GRID_HEIGHT_OFFSET + snake->body[0].y * GRID_CELL_SIZE;
@@ -122,12 +122,13 @@ void draw_snake(SDL_Renderer *renderer, Snake *snake)
     SDL_RenderFillRect(renderer, &rect);
 
     SDL_SetRenderDrawColor(renderer,
-                           snake_color.r, snake_color.g,
-                           snake_color.b, snake_color.a);
+                           snake_color.r,
+                           snake_color.g,
+                           snake_color.b,
+                           snake_color.a);
 
     for (int i = 1; i < snake->length; i++)
     {
-
         SDL_Rect rect;
         rect.x = GRID_WIDTH_OFFSET + snake->body[i].x * GRID_CELL_SIZE;
         rect.y = GRID_HEIGHT_OFFSET + snake->body[i].y * GRID_CELL_SIZE;

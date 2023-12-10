@@ -7,4 +7,4 @@ SDL_Color grid_cursor_color = {255, 255, 255, 255}; // White
 SDL_Color snake_color = {255, 0, 0, 255};
 SDL_Color snake_line_color = {255, 255, 0, 255};
 SDL_Color snake_head_color = {255, 128, 0, 255};
-SDL_Color food_color = {255, 128, 255, 0};
+SDL_Color food_color = {0, 255, 0, 0};

@@ -53,7 +53,8 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Food *food, Uint32 *lastUpd
     if (currentTime - *lastUpdateTime > UPDATE_INTERVAL)
     {
         update_events(snake);
-        bool moved = move_snake(snake);
+        bool moved = true;
+        // move_snake(snake);
         if (!moved)
         {
             quit = true;
@@ -63,6 +64,7 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Food *food, Uint32 *lastUpd
             if (snake->body[0].x == food->pos.x && snake->body[0].y == food->pos.y)
             {
                 food->active = false;
+                extend_snake(snake);
             }
         }
         *lastUpdateTime = currentTime;
@@ -70,7 +72,6 @@ bool main_loop(SDL_Renderer *renderer, Snake *snake, Food *food, Uint32 *lastUpd
 
     if (!food->active)
     {
-        printf("Generating food");
         generate_food(snake, food);
     }
 
@@ -147,7 +148,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    Snake snake = init_snake(INIT_SNAKE_LENGTH, RIGHT);
+    Snake snake = init_snake(INIT_SNAKE_LENGTH, NUM_HORIZONTAL_CELLS / 2, INIT_SNAKE_LENGTH + 1, DOWN);
     Food food = {(Position){0, 0}, false};
 
     Uint32 lastUpdateTime = 0;

@@ -14,6 +14,7 @@ void update_snake_direction(Snake *snake, Direction new_direction);
 bool move_snake(Snake *snake);
 void destroy_snake(Snake *snake);
 void draw_snake(SDL_Renderer *renderer, Snake *snake);
-Snake init_snake(int initial_size, Direction initial_direction);
+void extend_snake(Snake *snake);
+Snake init_snake(int initial_size, int init_x_position, int init_y_position, Direction initial_direction);
 
 #endif
